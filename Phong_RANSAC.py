@@ -9,16 +9,15 @@ def ransac(pts, thresh=0.05,epoch=1000) :
     """
     points = np.array(N,3)
     """
-    n_pts    = pts[np.random(len(pts))]
-    idx_pts  = np.arange(0,n_pts,1)
-    best_plane = np.zeros(4)
+    n_pts    = len(pts)
+    idx_pts  = list(np.arange(0,n_pts,1))
     n_inliers = 0
-
-    while (iter < epoch) :
+    i =0
+    while (i < epoch) :
         # TODO Générer un plan à partir de curr_pnt
         # TODO Inlier/outlier 
 
-        pts_sample = pts[random.sample(idx_pts)]
+        pts_sample = pts[random.sample(idx_pts,3)]
     
         vecA = pts_sample[1, :] - pts_sample[0, :]
         vecB = pts_sample[2, :] - pts_sample[0, :]
@@ -35,6 +34,7 @@ def ransac(pts, thresh=0.05,epoch=1000) :
         if sum(inlier_mask)> n_inliers:
             best_plane = plane
             n_inliers = sum(inlier_mask)
+        i += 1
 
     return plane
 
@@ -45,4 +45,5 @@ if __name__ =='__main__':
     pts = pts.voxel_down_sample(voxel_size=0.1)
     points = np.asarray(pts.points)
     plane = ransac(points)
+    print(plane)
 
