@@ -297,6 +297,7 @@ def hough_planes(points, threshold, use_tqdm=True,
     planes_out = np.array(planes_out)
     logger.debug(f'~~~~~~~~~~~~~~~~~~~~~~~~')
 
+
     return planes_out, points_best
 
 
@@ -306,24 +307,12 @@ if __name__ =='__main__':
     points = np.asarray(pcd.points)
     print('Number of points:', len(points))
 
-    planes, points_best = hough_planes(points, threshold=1000, use_tqdm=True,
-                    fi_step=2, fi_bounds=(0, 360),
-                    theta_step=2, theta_bounds=(0, 360),
-                    depth_steps=300, depth_bounds=(0.2, None), depth_start_step=3,
-                    dbscan_eps=3, dbscan_min_points=5,
-                    )
-    print('planes \n',planes)
-    print('point best \n', points_best)
-    viz.visualize_plane(points, planes[:,:3])
-    viz.show_points(points_best, is_hough_space=True)
-
-
-if __name__ =='__main__':
-    pcd = o3d.io.read_point_cloud(r'TFE-SPOT\hough-plane-python-master\RES\map_go_5.pcd')
-    pcd = pcd.voxel_down_sample(voxel_size=0.1)
-    points = np.asarray(pcd.points)
-    print('Number of points:', len(points))
-
+    # planes, points_best = hough_planes(points, threshold=1000, use_tqdm=True,
+    #                 fi_step=2, fi_bounds=(0, 360),
+    #                 theta_step=2, theta_bounds=(0, 360),
+    #                 depth_steps=300, depth_bounds=(0.2, None), depth_start_step=3,
+    #                 dbscan_eps=3, dbscan_min_points=5,
+    #                 )
     planes, points_best = hough_planes(points, threshold=500, fi_step=2, theta_step=2, depth_bounds=(0, 4))
     print('planes \n',planes)
     print('point best \n', points_best)
