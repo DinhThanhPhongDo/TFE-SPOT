@@ -4,15 +4,12 @@ import open3d as o3d
 import random 
 from tqdm import tqdm
 
-
-
 def ransac(pts,pts_n, thresh_d=0.05,thresh_n=0.8,epoch=1000) :
     """
     points = np.array(N,3)
     """
     n_pts    = len(pts)
     idx_pts  = list(np.arange(0,n_pts,1))
-    inlier_idx  = np.arange(0,n_pts,1)
     best_inlier_mask = None
     n_inliers = 0
 
@@ -30,7 +27,7 @@ def ransac(pts,pts_n, thresh_d=0.05,thresh_n=0.8,epoch=1000) :
 
         plane = np.array([normal[0], normal[1], normal[2], d])
     
-        dist_pt     = np.abs(np.dot(normal[:3],pts.T)) / norm_normal
+        dist_pt     = np.abs(np.dot(normal[:3],pts.T))+ d / norm_normal
 
         
         normal = normal/norm_normal
