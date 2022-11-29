@@ -10,12 +10,11 @@ def ransac(pts,pts_n, thresh_d=0.05,thresh_n=0.8,epoch=1000, tqdm_bool=False) :
     n_pts    = len(pts)
     idx_pts  = np.arange(0,n_pts,1)
     best_inlier_mask  = None
-    best_outlier_mask = None
     best_n_inliers = 0
     #https://halshs.archives-ouvertes.fr/halshs-00264843/document
     # eps = 1- plane_proportion
     # alpha = confidence_interval
-    epoch = 2500#int(np.log(1-alpha)/np.log(1-np.power(1-eps,3)))
+    # epoch int(np.log(1-alpha)/np.log(1-np.power(1-eps,3)))
 
     iterator = range(epoch)
     if tqdm_bool:
@@ -73,7 +72,7 @@ def get_all_planes(pcd, voxel_size = 0.1, n_inliers = 100, n_plane=1, display = 
         pcd_plane = outlier_cloud
         inliers_lst.append(inlier_cloud)
         planes.append(plane)
-        
+
     if display :
         print('number of planes:',len(planes))
         o3d.visualization.draw_geometries(inliers_lst+[outlier_cloud], zoom=0.8,
