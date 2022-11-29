@@ -52,7 +52,7 @@ def get_all_planes(pcd, voxel_size = 0.1, n_inliers = 100, n_plane=1, display = 
     planes      = []
     inliers_lst = []
     
-    while(True) :
+    while(len(planes)<n_plane and len(pcd_plane.points) > 3) :
         pts_n        = np.asarray(pcd_plane.normals)
         pts          = np.asarray(pcd_plane.points)
         plane,inliers= ransac(pts,pts_n, thresh_d=0.05,thresh_n=0.8,epoch=1000, tqdm_bool=False)
@@ -62,7 +62,7 @@ def get_all_planes(pcd, voxel_size = 0.1, n_inliers = 100, n_plane=1, display = 
 
         inlier_cloud             = pcd_plane.select_by_index(inliers)
         inlier_cloud, inlier_idx = inlier_cloud.remove_statistical_outlier(nb_neighbors=5,std_ratio=2.0)
-        inlier_cloud.paint_uniform_color([np.random.uniform(0,0.8),np.random.uniform(0,1),np.random.uniform(0,1)]) 
+        inlier_cloud.paint_uniform_color([np.random.uniform(0,0.3),np.random.uniform(0,1),np.random.uniform(0,1)]) 
         inliers = inliers[inlier_idx]
 
         outlier_cloud              = pcd_plane.select_by_index(inliers, invert=True)
@@ -72,6 +72,7 @@ def get_all_planes(pcd, voxel_size = 0.1, n_inliers = 100, n_plane=1, display = 
         pcd_plane = outlier_cloud
         inliers_lst.append(inlier_cloud)
         planes.append(plane)
+       
 
     if display :
         print('number of planes:',len(planes))
@@ -85,6 +86,6 @@ def get_all_planes(pcd, voxel_size = 0.1, n_inliers = 100, n_plane=1, display = 
 
 
 if __name__ =='__main__':
-    pcd = o3d.io.read_point_cloud("hough-plane-python-master\RES\map_go_5.pcd")    
-    get_all_planes(pcd,n_inliers=100, n_plane=20, display = True)
+    pcd = o3d.io.read_point_cloud("TFE-SPOT\hough-plane-python-master\RES\map_go_5.pcd")    
+    get_all_planes(pcd,n_inliers=500, n_plane=20, display = True)
 
